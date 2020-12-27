@@ -19,6 +19,10 @@ class Field {
 
   userInput() {
     let current = 0;
+    let location = 0;
+    let array = 0;
+    const star = '*';
+
     // Get Input
     const input = prompt('Which way? ');
     if (input === 'd' || input === 'r' || input === 'u' || input === 'l') {
@@ -27,24 +31,47 @@ class Field {
             console.log('Invalid input, please use d for Down, r for Right, u for Up, or l for Left');
         };
 
-    // Find Star
-    console.log(findUser());
-  }
-
-  findUser() {
-      this.field.forEach(i => {
-        const star = '*';
+    // Find Last Star
+    this.field.forEach(i => {
         let index = i.length - 1;
         for (; index >= 0; index--) {
             if (i[index] === star) {
-                console.log(i.indexOf(star));   
+                location = i.indexOf(star);
+                array = this.field.indexOf(i);
+                console.log(location);
+                console.log(array);
               }
               break;
             }
-            
         })
+ 
+    // Left
+    if (current === 'l' && array < this.field.length - 1) {
+        let line = array + 1;
+        this.field[line].splice(location, 1, star);
+        }
+
+    // Up
+    if (current === 'u' && location < this.field[array].length - 1) {
+        location++;
+        this.field[array].splice(location, 1, star);
+        }
+
+    // Down
+    if (current === 'd' && location > 0) {
+        location = 0;
+        this.field[array].splice(location, 1, star);
+        }
+
+    // Right
+    if (current === 'r' && array < this.field.length - 1) {
+        let line = array - 1;
+        this.field[line].splice(location, 1, star);
+        }
+
+    this.print();
+    this.userInput();
     }
-  
 
 
   updateField(input) {
@@ -55,11 +82,10 @@ class Field {
 }
 
 const myField = new Field([
-    ['*', '░', 'O'],
-    ['░', 'O', '*'],
-    ['░', '^', '░'],
+    ['░', '░', '░'],
+    ['░', '*', '░'],
+    ['░', '░', '░'],
   ]);
 
 myField.print();
 myField.userInput();
-myField.findUser();
